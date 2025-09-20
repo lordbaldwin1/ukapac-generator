@@ -1,12 +1,12 @@
 # UK + APAC Country Generator
 
 ## Countries to add
-- Singapore (SG)
+- [x] Singapore (SG)
 - Taiwan (TW)
-- Hong Kong (HK)
+- [x] Hong Kong (HK)
 - Indonesia (ID)
 - Malaysia (MY)
 - Thailand (TH)
 - Vietnam (VN)
 - India (IN)
-- United Kingdom (UK/GB)
+- [x] United Kingdom (UK/GB)

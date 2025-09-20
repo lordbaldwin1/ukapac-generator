@@ -4,6 +4,7 @@ import { useState } from "react";
 import { Button } from "~/components/ui/button";
 import { generateHKID } from "~/lib/hkid";
 import { generateNRIC } from "~/lib/nric";
+import { generateNINO } from "~/lib/uknino";
 
 const regions = ["uk", "sg", "tw", "hk", "id", "my", "th", "vn", "in"];
 
@@ -13,7 +14,21 @@ export default function HomePage() {
   const [tin, setTin] = useState<string>("S8240678F");
 
   function selectRegion(region: string) {
-    setSelectedRegion(region)
+    setSelectedRegion(region);
+    switch (region) {
+      case "sg":
+        setTin(generateNRIC());
+        setNumber(generateSGPhoneNumber());
+        break;
+      case "hk":
+        setTin(() => generateHKID(null));
+        setNumber(generateHKPhoneNumber());
+        break;
+      case "uk":
+        setTin(() => generateNINO());
+        setNumber(generateUKPhoneNumber);
+        break;
+    }
   }
 
   function regenerate() {
@@ -23,7 +38,13 @@ export default function HomePage() {
         setNumber(generateSGPhoneNumber());
         break;
       case "hk":
-        setTin(() => generateHKID(null))
+        setTin(() => generateHKID(null));
+        setNumber(generateHKPhoneNumber());
+        break;
+      case "uk":
+        setTin(() => generateNINO());
+        setNumber(generateUKPhoneNumber);
+        break;
     }
   }
   return (
@@ -31,9 +52,17 @@ export default function HomePage() {
       <div className="flex flex-row gap-2 p-4">
         {regions.map((region) =>
           selectedRegion === region ? (
-            <Button className="w-16" variant={"outline"} key={region}>{region}</Button>
+            <Button className="w-16" variant={"outline"} key={region}>
+              {region}
+            </Button>
           ) : (
-            <Button className="w-16" onClick={() => selectRegion(region)} key={region}>{region}</Button>
+            <Button
+              className="w-16"
+              onClick={() => selectRegion(region)}
+              key={region}
+            >
+              {region}
+            </Button>
           ),
         )}
       </div>
@@ -44,7 +73,9 @@ export default function HomePage() {
           <p className="font-mono">{number}</p>
         </div>
         <div className="text-center">
-          <h1 className="border-b-1 text-lg">{selectedRegion === "sg" ? "nric" : "tin"}</h1>
+          <h1 className="border-b-1 text-lg">
+            {selectedRegion === "sg" ? "nric" : "tin"}
+          </h1>
           <p className="font-mono">{tin}</p>
         </div>
       </div>
@@ -55,6 +86,22 @@ export default function HomePage() {
 function generateSGPhoneNumber() {
   let number = "6";
   for (let i = 0; i < 7; i++) {
+    number += String(Math.floor(Math.random() * 10));
+  }
+  return number;
+}
+
+function generateHKPhoneNumber() {
+  let number = "2";
+  for (let i = 0; i < 7; i++) {
+    number += String(Math.floor(Math.random() * 10));
+  }
+  return number;
+}
+
+function generateUKPhoneNumber() {
+  let number = "7";
+  for (let i = 0; i < 9; i++) {
     number += String(Math.floor(Math.random() * 10));
   }
   return number;
